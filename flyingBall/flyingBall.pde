@@ -8,11 +8,12 @@ void setup() {
 }
 
 void draw() {
-  if(frameCount >= numberFramesToSkipBeforeRecoring + numberFramesPerBall) {
-    return;
-  }
+  //if(frameCount >= numberFramesToSkipBeforeRecoring + numberFramesPerBall) {
+    //return;
+  //}
   
   background(255);
+  text("fps="+((int) frameCount ), width-100, 20);
   
   if (frameCount % numberFramesPerBall == 0) {
   balls.add(new Ball());
@@ -20,4 +21,5 @@ void draw() {
   for(Ball aBall: balls) {
     aBall.draw();
   }
+  //saveFrame("flyingBallGif-###.png");
 }
