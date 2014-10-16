@@ -3,3 +3,7 @@
 *.jpg
 *.jpeg
 *.pdf
+sketch.properties
+.DS_Store
+modes
+web-export
