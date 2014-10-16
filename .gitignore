@@ -5,5 +5,5 @@
 *.pdf
 sketch.properties
 .DS_Store
-modes
-web-export
+modes/
+web-export/
