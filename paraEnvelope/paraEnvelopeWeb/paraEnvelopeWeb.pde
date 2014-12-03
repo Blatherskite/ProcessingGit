@@ -1,9 +1,9 @@
 //import processing.pdf.*; //<>//
-float minX = -4;
-float minY = -4;
-float maxX = 4;
-float maxY = 4;
-float dX = 10;
+//float minX = -4;
+//float minY = -4;
+//float maxX =x 4;
+//float maxY = 4;
+float dX = 20;
 float stepSize = .3;
 boolean axisIsVisible = false;
 
@@ -25,14 +25,14 @@ void bindJavascript(JavaScript js) {
 JavaScript javascript;
 
 void setup() {
-    size(750, 750);
-//  size(1920, 1080);
-  parabola.setFrame(minX, maxX, minY, maxY);
-  cubic.setFrame(minX, maxX, minY, maxY);
-  sine.setFrame(minX, maxX, minY, maxY);
-  exponential.setFrame(minX, maxX, minY, maxY);
-  cotangent.setFrame(minX, maxX, minY, maxY);
-  cosecant.setFrame(minX, maxX, minY, maxY);
+  size(750, 750);
+  //  size(1920, 1080);
+  //  parabola.setFrame(minX, maxX, minY, maxY);
+  //  cubic.setFrame(minX, maxX, minY, maxY);
+  //  sine.setFrame(minX, maxX, minY, maxY);
+  //  exponential.setFrame(minX, maxX, minY, maxY);
+  //  cotangent.setFrame(minX, maxX, minY, maxY);
+  //  cosecant.setFrame(minX, maxX, minY, maxY);
   functor = parabola;
 }
 
@@ -48,18 +48,22 @@ void draw() {
     drawYAxis();
   }
   stroke(0, 255*stepSize+10);
-  float range = 6;
-  for (int i = 0; i < range / stepSize; ++i) {
-    float x_ = -3 + i * stepSize;
-    float slope = functor.slope(x_);
-    float y = functor.value(x_);
-    line(mapXToScreen(x_-dX, functor.minX, functor.maxX), mapYToScreen(-slope*dX+y, functor.minY, functor.maxY), mapXToScreen(x_+dX, functor.minX, functor.maxX), mapYToScreen(slope*dX+y, functor.minY, functor.maxY));
-  }
-//  exit();
+  //  float range = functor.maxX - functor.minX;
+  float nextX = functor.minX;
+  while (nextX < functor.maxX) {
+    float slope = functor.slope(nextX);
+    float y = functor.value(nextX);
+    float x0 = mapXToScreen(nextX-dX, functor.minX, functor.maxX);
+    float y0 = mapYToScreen(-slope*dX+y, functor.minY, functor.maxY);
+    float x1 = mapXToScreen(nextX+dX, functor.minX, functor.maxX);
+    float y1 = mapYToScreen(slope*dX+y, functor.minY, functor.maxY);
+    line(x0, y0, x1, y1);
+    nextX +=  stepSize;  }
+  //  exit();
 }
 
 void setFunctor(String f) {
-//  println(f);
+  //  println(f);
   if (f.equals("Parabola")) {
     functor = parabola;
   } else if (f.equals("Cubic")) {
@@ -73,20 +77,15 @@ void setFunctor(String f) {
   } else {
     functor = cosecant;
   }
-  functor.setFrame(minX, maxX, minY, maxY);
+  //  functor.setFrame(minX, maxX, minY, maxY);
 }
 
 void changeFrame(float newMinX, float newMaxX, float newMinY, float newMaxY) {
-//  println(newMinX);
-  minX = newMinX;
-  maxX = newMaxX;
-  minY = newMinY;
-  maxY = newMaxY;
-  functor.setFrame(minX, maxX, minY, maxY);
+  functor.setFrame(newMinX, newMaxX, newMinY, newMaxY);
 }
 
 void setStepSize(float d) {
-  stepSize = d;
+  stepSize = d * 1.0;
 }
 
 void showAxis(boolean show) {
@@ -109,23 +108,26 @@ void drawLine(float x0, float y0, float x1, float y1) {
   line(mappedX0, mappedY0, mappedX1, mappedY1);
 }
 
-float mapXToScreen(float x, float minX, float maxX) {
-  return (x - minX)/(maxX - minX)* width - width/2;
+float mapXToScreen(float x, float minx, float maxx) {
+  return (x - minx)/(maxx - minx)* width - width/2;
 }
 
-float mapYToScreen(float y, float minY, float maxY) {
-  return height/2 -(y - minY)/(maxY - minY)* height;
-  
+float mapYToScreen(float y, float miny, float maxy) {
+  return height/2 -(y - miny)/(maxy - miny)* height;
 }
+
 abstract class Functor {
-  float minX, minY, maxX, maxY;
+  float minX = -4;
+  float minY = -4;
+  float maxX = 4;
+  float maxY = 4;
   abstract float value(float x);
   abstract float slope(float x);
   void setFrame(float minX_, float maxX_, float minY_, float maxY_) {
-    minX = minX_;
-    maxX = maxX_;
-    minY = minY_;
-    maxY = maxY_;
+    minX = minX_ * 1.0;
+    maxX = maxX_ * 1.0;
+    minY = minY_ * 1.0;
+    maxY = maxY_ * 1.0;
   }
 }
 
