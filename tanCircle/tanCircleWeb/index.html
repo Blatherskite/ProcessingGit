@@ -41,6 +41,10 @@
 	            var d = document.getElementById('stepSize').value;
 	            pjs.setStepSize(d);
 			}
+			function radiusScale() {
+	            var r = document.getElementById('radiusScale').value;
+	            pjs.setRadiusScale(r);
+	        }
 	        function functor() {
 	            var f = document.getElementById('functor').value;
 	            pjs.setFunctor(f);
@@ -75,12 +79,23 @@
 					type="range"  
 					id="stepSize"   
 					onchange="stepSize()"
-					value="0.3" 
+					value="0.1" 
 					size="4" 
 					min="0.02" max="1" step ="0.02"
 					style="width: 100px">
-					</input><output type="text" id="stepSizeDisplay" value="">0.3</output>
+					</input><output type="text" id="stepSizeDisplay" value="">0.1</output>
 				</p>
+				<p>Radius:
+					<input
+					type="range"  
+					id="radiusScale"   
+					onchange="radiusScale()"
+					value="0.01" 
+					size="4" 
+					min="0.001" max="0.02" step ="0.001"
+					style="width: 100px">
+				</p>
+				
 				<p>Minimum x:
 					<input
 					type="number"

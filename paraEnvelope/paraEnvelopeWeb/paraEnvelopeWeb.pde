@@ -1,5 +1,4 @@
-//import processing.pdf.*; //<>//
-//float minX = -4;
+//float minX = -4; //<>//
 //float minY = -4;
 //float maxX =x 4;
 //float maxY = 4;
