@@ -32,10 +32,13 @@
 			function showValues(d) {
 	 			document.getElementById('stepSizeDisplay').value = d;
 			}
-                
 	        function showAxis() {
 	            var s = document.getElementById('showAxis').checked;
 	            pjs.showAxis(s);
+			}
+	        function showLine() {
+	            var l = document.getElementById('showLine').checked;
+	            pjs.showLine(l);
 			}
 	        function stepSize() {
 	            var d = document.getElementById('stepSize').value;
@@ -90,9 +93,9 @@
 					type="range"  
 					id="radiusScale"   
 					onchange="radiusScale()"
-					value="0.01" 
+					value="0.05"
 					size="4" 
-					min="0.001" max="0.02" step ="0.001"
+					min="0.005" max="0.75" step ="0.005"
 					style="width: 100px">
 				</p>
 				
@@ -137,6 +140,13 @@
 					type="checkbox" 
 					id="showAxis" 
 					onclick="showAxis()">
+					</input>
+				</p>
+				<p>Show Line:
+					<input 
+					type="checkbox" 
+					id="showLine" 
+					onclick="showLine()">
 					</input>
 				</p>
 			</fieldset>

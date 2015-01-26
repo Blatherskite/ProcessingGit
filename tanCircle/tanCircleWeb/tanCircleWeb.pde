@@ -1,12 +1,13 @@
-float minX = -4; //<>// //<>// //<>//
-float minY = -4;
-float maxX = 4;
-float maxY = 4;
+//float minX = -4; //<>//
+//float minY = -4;
+//float maxX = 4;
+//float maxY = 4;
 float dX = 5;
-float stepSize = .01;
-float radiusScale = .01;
-float radius = (maxX - minX) * radiusScale;
+float stepSize = .1;
+float radiusScale = .005;
+//float radius = (maxX - minX) * radiusScale;
 boolean axisIsVisible = false;
+boolean lineIsVisible = false;
 
 Functor functor;
 Functor parabola = new Parabola();
@@ -49,23 +50,29 @@ void draw() {
   }
   fill(100, 0);
   beginShape();
-  for (float x = minX; x < maxX; x += stepSize) {
+float radius = radiusScale;//(functor.maxX - functor.minX) * radiusScale;
+  for (float x = functor.minX; x < functor.maxX; x += stepSize) {
     float y = functor.value(x);
-    //    float x_ = mapXToScreen(x);
-    //    float y_ = mapYToScreen(y);
-    //    vertex(x_, y_);
+    if (lineIsVisible) {
+      stroke(0, 255);
+      float x_ = mapXToScreen(x);
+      float y_ = mapYToScreen(y);
+      vertex(x_, y_);
+    }
     float yPrime = functor.slope(x);
-    float rScaled = radius * yPrime * yPrime;
+    float rScaled = radius * yPrime * yPrime;// * yPrime;
     float yDelta = rScaled/(sqrt(1 + (yPrime * yPrime)));
     float yCenter = y + yDelta;
     float yICenter = y - yDelta;
     float xCenter = x - yPrime * (yCenter - y);
-    float xICenter = x - yPrime * (yCenter - y);
-    float screenDiameter = rScaled/(maxX - minX) * width * 2;
-    stroke(0, stepSize * 1000);
-    //    stroke(0, 255*stepSize+10);
-    ellipse(mapXToScreen(xCenter), mapYToScreen(yCenter), screenDiameter, screenDiameter);    
-    ellipse(mapXToScreen(xICenter), mapYToScreen(yICenter), screenDiameter, screenDiameter);
+    float xICenter = x + yPrime * (yCenter - y);
+    float screenDiameter = rScaled/(functor.maxX - functor.minX) * width * 2;
+    if (screenDiameter < height * 50) {
+      stroke(0, stepSize * 1000);
+      //    stroke(0, 255*stepSize+10);
+      ellipse(mapXToScreen(xCenter), mapYToScreen(yCenter), screenDiameter, screenDiameter);    
+      ellipse(mapXToScreen(xICenter), mapYToScreen(yICenter), screenDiameter, screenDiameter);
+    }
   }
   endShape();
 }
@@ -85,7 +92,7 @@ void setFunctor(String f) {
   } else {
     functor = cosecant;
   }
-  functor.setFrame(minX, maxX, minY, maxY);
+  //  functor.setFrame(minX, maxX, minY, maxY);
 }
 
 void changeFrame(float newMinX, float newMaxX, float newMinY, float newMaxY) {
@@ -112,6 +119,10 @@ void showAxis(boolean show) {
   axisIsVisible = show;
 }
 
+void showLine(boolean view) {
+  lineIsVisible = view;
+}
+
 void drawXAxis() {
   drawLine(functor.minX, 0, functor.maxX, 0);
 }
@@ -129,15 +140,18 @@ void drawLine(float x0, float y0, float x1, float y1) {
 }
 
 float mapXToScreen(float x) {
-  return (x - minX)/(maxX - minX)* width - width/2;
+  return (x - functor.minX)/(functor.maxX - functor.minX)* width - width/2;
 }
 
 float mapYToScreen(float y) {
-  return height/2 -(y - minY)/(maxY - minY)* height;
+  return height/2 -(y - functor.minY)/(functor.maxY - functor.minY)* height;
 }
 
 abstract class Functor {
-  float minX, minY, maxX, maxY;
+  float minX = -4;
+  float minY = -4;
+  float maxX = 4;
+  float maxY = 4;  
   abstract float value(float x);
   abstract float slope(float x);
   void setFrame(float minX_, float maxX_, float minY_, float maxY_) {
